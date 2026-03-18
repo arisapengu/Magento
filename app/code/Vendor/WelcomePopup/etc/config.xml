@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <welcome_popup>
+            <general>
+                <enabled>1</enabled>
+                <title>Welcome to Our Store!</title>
+                <content>Discover our latest products and exclusive deals. Sign up today for special member discounts.</content>
+                <button_text>Start Shopping</button_text>
+                <cookie_lifetime>7</cookie_lifetime>
+            </general>
+        </welcome_popup>
+    </default>
+</config>

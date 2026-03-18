@@ -1,0 +1,9 @@
+<!--@subject Your Order #{{var order_id}} Has Been Cancelled & Refund Processed @-->
+<!--@vars {"var order_id":"Order Number","var customer_name":"Customer First Name","var admin_note":"Admin Note"} @-->
+<p>Dear {{var customer_name}},</p>
+<p>Your cancellation request for order <strong>#{{var order_id}}</strong> has been <strong style="color:#28a745">approved</strong>.</p>
+<p>A refund has been processed and will be reflected in your account within 3–5 business days.</p>
+{{if admin_note}}
+<p><strong>Note from our team:</strong> {{var admin_note}}</p>
+{{/if}}
+<p>Thank you for shopping with us.</p>

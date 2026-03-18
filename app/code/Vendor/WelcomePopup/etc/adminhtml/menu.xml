@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Vendor_WelcomePopup::menu"
+             title="Welcome Popup"
+             module="Vendor_WelcomePopup"
+             sortOrder="100"
+             parent="Magento_Backend::marketing"
+             action="adminhtml/system_config/edit/section/welcome_popup"
+             resource="Vendor_WelcomePopup::config"/>
+    </menu>
+</config>

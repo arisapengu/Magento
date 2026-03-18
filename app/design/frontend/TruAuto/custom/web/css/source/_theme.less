@@ -1,0 +1,120 @@
+// /**
+//  * TruAuto Custom — Child of Magento/luma
+//  * Colors based on mockup: Navy #003366, Red #CC0000, Black #000000
+//  */
+
+@import '_custom.less';
+
+//
+//  Color Palette
+//  ---------------------------------------------
+
+@primary__color:                    #003366;   // Navy Blue
+@primary__color__dark:              #002244;
+@active__color:                     #CC0000;   // Red — CTA, active states
+@link__color:                       @primary__color;
+@link__hover__color:                #CC0000;
+
+//
+//  Typography
+//  ---------------------------------------------
+
+@font-family__base:                 'Public Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+@font-family__sans-serif:           'Public Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+@font-size__base:                   14px;
+@font-weight__regular:              400;
+@font-weight__semibold:             600;
+@font-weight__bold:                 700;
+
+//
+//  Buttons — Primary (Add to Cart)
+//  ---------------------------------------------
+
+@button-primary__background:        #000000;        // Black (mockup: bg-accent)
+@button-primary__border:            1px solid #000000;
+@button-primary__color:             #ffffff;
+@button-primary__hover__background: @active__color; // Hover → Red
+@button-primary__hover__border:     1px solid #aa0000;
+@button-primary__hover__color:      #ffffff;
+@button-primary__active__background:@button-primary__hover__background;
+@button-primary__active__border:    @button-primary__hover__border;
+@button-primary__active__color:     @button-primary__hover__color;
+
+//
+//  Buttons — Default/Secondary
+//  ---------------------------------------------
+
+@button__background:                #f0f0f0;
+@button__border:                    1px solid #cccccc;
+@button__color:                     @primary__color;
+@button__hover__background:         #e0e0e0;
+@button__hover__color:              @primary__color;
+@button__font-weight:               @font-weight__semibold;
+
+//
+//  Navigation
+//  ---------------------------------------------
+
+@navigation__background:            @primary__color;   // Navy nav bar
+@navigation-level0-item__color:     #ffffff;
+@navigation-level0-item__hover__color: #ffffff;
+@navigation-level0-item__active__color: #ffffff;
+@navigation-level0-item__active__border-color: @active__color;
+
+//  Desktop nav
+@navigation-desktop-level0-item__color:             #ffffff;
+@navigation-desktop-level0-item__hover__color:       #ffffff;
+@navigation-desktop-level0-item__active__color:      #ffffff;
+@navigation-desktop-level0-item__hover__background:  @primary__color__dark;
+@navigation-desktop-level0-item__active__background: @active__color;
+@navigation-desktop-level0-item__line-height:        47px;
+
+//
+//  Header
+//  ---------------------------------------------
+
+@header__background-color:          @primary__color;   // Navy header
+@header-icons-color:                #ffffff;
+@header-icons-color-hover:          @active__color;
+
+//
+//  Page Background
+//  ---------------------------------------------
+
+@page__background-color:            #f8f6f6;   // mockup: background-light
+@sidebar__background-color:         #ffffff;
+
+//
+//  Breadcrumbs
+//  ---------------------------------------------
+
+@breadcrumbs-link__color:           @primary__color;
+@breadcrumbs-link__visited__color:  @primary__color;
+@breadcrumbs-link__hover__color:    @active__color;
+@breadcrumbs-current__color:        #333333;
+
+//
+//  Footer
+//  ---------------------------------------------
+
+@copyright__background-color:       #111111;
+@footer__background-color:          #000000;   // Black footer (mockup: bg-accent)
+@footer-links-color:                #94a3b8;   // slate-400
+@footer-links-color-hover:          @active__color;
+
+//
+//  Panels / Sidebar
+//  ---------------------------------------------
+
+@panel__background-color:           #ffffff;
+@panel__border-color:               #e2e8f0;
+@border-color__base:                #e2e8f0;
+
+//
+//  Price
+//  ---------------------------------------------
+
+@price__color:                      @active__color;   // Red price
+@price-old__color:                  #94a3b8;
+
+

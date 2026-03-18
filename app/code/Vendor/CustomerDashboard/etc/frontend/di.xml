@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Customer\Block\Account\Navigation">
+        <arguments>
+            <argument name="links" xsi:type="array">
+                <item name="dashboard_link" xsi:type="array">
+                    <item name="path" xsi:type="string">dashboard/dashboard/index</item>
+                    <item name="label" xsi:type="string">My Dashboard</item>
+                    <item name="sortOrder" xsi:type="string">12</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>   

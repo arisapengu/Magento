@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Catalog\Block\Adminhtml\Product\Attribute\Edit\Tab\Options">
+        <plugin name="vendor_company_option_image_column"
+                type="Vendor\CompanyAttribute\Plugin\Block\Adminhtml\Catalog\Product\Attribute\Edit\Tab\Options"
+                sortOrder="10"/>
+    </type>
+    <type name="Magento\Catalog\Controller\Adminhtml\Product\Attribute\Save">
+        <plugin name="vendor_company_option_image_save"
+                type="Vendor\CompanyAttribute\Plugin\Controller\Adminhtml\Product\Attribute\Save"
+                sortOrder="10"/>
+    </type>
+</config>

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <cancel_order>
+            <general>
+                <enabled>1</enabled>
+                <allowed_states>new,pending_payment,processing</allowed_states>
+                <cancel_reasons>Changed my mind,Ordered by mistake,Found better price,Item no longer needed,Other</cancel_reasons>
+            </general>
+        </cancel_order>
+    </default>
+</config>

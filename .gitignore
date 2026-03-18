@@ -1,0 +1,6 @@
+/*
+!app/code/
+!app/code/**
+!app/design/
+!app/design/**
+!.gitignore

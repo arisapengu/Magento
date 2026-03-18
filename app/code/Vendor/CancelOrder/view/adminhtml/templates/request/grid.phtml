@@ -1,0 +1,132 @@
+<?php
+/** @var \Vendor\CancelOrder\Block\Adminhtml\Request\Grid $block */
+$collection = $block->getCollection();
+
+// DEBUG
+// echo '<pre style="background:#f5f5f5;padding:12px;margin:12px;border:1px solid #ccc">';
+// echo 'Count: ' . $collection->count() . "\n";
+// echo 'SQL: ' . $collection->getSelect()->__toString() . "\n";
+// echo 'Items: '; print_r($collection->getData());
+// echo '</pre>';
+?>
+<div class="cancel-requests-grid">
+    <!-- <h2 class="page-title"><?= $block->escapeHtml(__('Cancel Order Requests')) ?></h2> -->
+
+    <?php if (!$collection->count()): ?>
+        <div class="message message-empty">
+            <?= $block->escapeHtml(__('No cancel requests found.')) ?>
+        </div>
+    <?php else: ?>
+    <table class="data-grid" id="cancel-requests-table">
+        <thead>
+            <tr>
+                <th><?= $block->escapeHtml(__('ID')) ?></th>
+                <th><?= $block->escapeHtml(__('Order #')) ?></th>
+                <th><?= $block->escapeHtml(__('Customer')) ?></th>
+                <th><?= $block->escapeHtml(__('Email')) ?></th>
+                <th><?= $block->escapeHtml(__('Reason')) ?></th>
+                <th><?= $block->escapeHtml(__('Status')) ?></th>
+                <th><?= $block->escapeHtml(__('Admin Note')) ?></th>
+                <th><?= $block->escapeHtml(__('Credit Memo')) ?></th>
+                <th><?= $block->escapeHtml(__('Requested At')) ?></th>
+                <th><?= $block->escapeHtml(__('Actions')) ?></th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($collection as $request): ?>
+            <tr id="request-row-<?= (int) $request->getId() ?>">
+                <td><?= (int) $request->getId() ?></td>
+                <td>
+                    <a href="<?= $block->escapeUrl($block->getOrderUrl($request->getOrderIncrementId())) ?>">
+                        #<?= $block->escapeHtml($request->getOrderIncrementId()) ?>
+                    </a>
+                </td>
+                <td><?= $block->escapeHtml($request->getCustomerName()) ?></td>
+                <td><?= $block->escapeHtml($request->getCustomerEmail()) ?></td>
+                <td><?= $block->escapeHtml($request->getReason() ?: '-') ?></td>
+                <td><?= /* @noEscape */ $block->getStatusBadge($request->getStatus()) ?></td>
+                <td><?= $block->escapeHtml($request->getAdminNote() ?: '-') ?></td>
+                <td>
+                    <?php if ($request->getCreditmemoId()): ?>
+                        <a href="<?= $block->escapeUrl($block->getCreditmemoUrl((int)$request->getCreditmemoId())) ?>"
+                           target="_blank"
+                           style="color:#007bdb;font-weight:600">
+                            #<?= (int) $request->getCreditmemoId() ?>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12" style="vertical-align:middle;margin-left:2px"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        </a>
+                    <?php else: ?>
+                        <span style="color:#ccc">—</span>
+                    <?php endif; ?>
+                </td>
+                <td><?= $block->escapeHtml($request->getCreatedAt()) ?></td>
+                <td class="col-actions">
+                    <?php if ($request->getStatus() === \Vendor\CancelOrder\Model\Request::STATUS_PENDING): ?>
+                    <div class="action-group" data-request-id="<?= (int) $request->getId() ?>">
+                        <input type="text"
+                               class="input-text admin-note-input"
+                               placeholder="<?= $block->escapeHtmlAttr(__('Admin note (optional)')) ?>"
+                               style="width:160px;margin-right:6px"/>
+                        <button class="action-default scalable action-approve"
+                                data-url="<?= $block->escapeUrl($block->getApproveUrl((int)$request->getId())) ?>"
+                                data-form-key="<?= $block->escapeHtmlAttr($block->getFormKey()) ?>">
+                            <?= $block->escapeHtml(__('Approve')) ?>
+                        </button>
+                        <button class="action-default scalable action-reject"
+                                data-url="<?= $block->escapeUrl($block->getRejectUrl((int)$request->getId())) ?>"
+                                data-form-key="<?= $block->escapeHtmlAttr($block->getFormKey()) ?>">
+                            <?= $block->escapeHtml(__('Reject')) ?>
+                        </button>
+                    </div>
+                    <?php else: ?>
+                        <span style="color:#999"><?= $block->escapeHtml(__('Processed')) ?></span>
+                    <?php endif; ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+    <?php endif; ?>
+</div>
+
+<style>
+.cancel-requests-grid { padding: 20px; }
+.action-approve { background: #007bdb; color: #fff; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; margin-right: 4px; }
+.action-reject  { background: #d9534f; color: #fff; border: none; padding: 6px 14px; border-radius: 4px; cursor: pointer; }
+.action-approve:hover { background: #0060b0; }
+.action-reject:hover  { background: #c9302c; }
+.action-group { display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
+</style>
+
+<script>
+require(['jquery'], function ($) {
+    $(document).on('click', '.action-approve, .action-reject', function () {
+        var $btn       = $(this);
+        var $group     = $btn.closest('.action-group');
+        var requestId  = $group.data('request-id');
+        var url        = $btn.data('url');
+        var formKey    = $btn.data('form-key');
+        var adminNote  = $group.find('.admin-note-input').val();
+
+        if (!confirm('<?= $block->escapeJs(__('Are you sure?')) ?>')) return;
+
+        $btn.prop('disabled', true).text('...');
+
+        $.post(url, { request_id: requestId, admin_note: adminNote, form_key: formKey }, function (res) {
+            if (res.success) {
+                $('#request-row-' + requestId).find('.col-actions').html(
+                    '<span style="color:#28a745;font-weight:600">' + res.message + '</span>'
+                );
+                $('#request-row-' + requestId).find('td:nth-child(6)').html(
+                    '<span style="font-weight:600">' + (url.indexOf('approve') > -1 ? 'Approved' : 'Rejected') + '</span>'
+                );
+            } else {
+                alert(res.message);
+                $btn.prop('disabled', false).text($btn.hasClass('action-approve') ? 'Approve' : 'Reject');
+            }
+        }, 'json').fail(function () {
+            alert('An error occurred.');
+            $btn.prop('disabled', false);
+        });
+    });
+});
+</script>

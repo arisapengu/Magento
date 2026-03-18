@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="cancel_order" translate="label" sortOrder="200" showInDefault="1" showInWebsite="1" showInStore="1">
+            <tab>vendor</tab>
+            <label>Cancel Order</label>
+            <resource>Vendor_CancelOrder::config</resource>
+            <group id="general" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Settings</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Allow Customer to Cancel Order</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="allowed_states" translate="label" type="multiselect" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cancellable Order Statuses</label>
+                    <source_model>Vendor\CancelOrder\Model\Config\Source\OrderState</source_model>
+                    <comment>Orders in these statuses can be cancelled by the customer</comment>
+                    <depends><field id="enabled">1</field></depends>
+                </field>
+                <field id="cancel_reasons" translate="label" type="textarea" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Cancel Reasons</label>
+                    <comment>One reason per line</comment>
+                    <depends><field id="enabled">1</field></depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

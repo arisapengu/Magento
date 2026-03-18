@@ -1,0 +1,12 @@
+<!--@subject New Cancel Request - Order #{{var order_id}} @-->
+<!--@vars {"var order_id":"Order Number","var customer_name":"Customer Name","var reason":"Cancel Reason","var immediate":"Immediate Cancel","var request_id":"Request ID"} @-->
+<p>A customer has submitted a cancellation request.</p>
+<table style="border-collapse:collapse;width:100%;max-width:520px">
+    <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Order #</td><td style="padding:8px;border:1px solid #ddd">{{var order_id}}</td></tr>
+    <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Customer</td><td style="padding:8px;border:1px solid #ddd">{{var customer_name}}</td></tr>
+    <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Reason</td><td style="padding:8px;border:1px solid #ddd">{{var reason}}</td></tr>
+    <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Status</td><td style="padding:8px;border:1px solid #ddd">{{if immediate}}Cancelled immediately (not yet shipped){{else}}Pending approval (order already shipped){{/if}}</td></tr>
+</table>
+{{if request_id}}
+<p style="margin-top:16px">Please review and approve/reject the request in the admin panel under <strong>Sales &rarr; Cancel Requests</strong>.</p>
+{{/if}}

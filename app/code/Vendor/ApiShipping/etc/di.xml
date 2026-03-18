@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <!-- "Send to Lalamove" button on shipment CREATE page (new shipment form) -->
+    <type name="Magento\Shipping\Block\Adminhtml\Create">
+        <plugin name="vendor_apishipping_lalamove_shipment_create_button"
+                type="Vendor\ApiShipping\Plugin\Adminhtml\Shipment\AddLalamoveButton"
+                sortOrder="10"/>
+    </type>
+
+    <!-- "Send to Lalamove" button on shipment VIEW page -->
+    <type name="Magento\Shipping\Block\Adminhtml\View">
+        <plugin name="vendor_apishipping_lalamove_shipment_view_button"
+                type="Vendor\ApiShipping\Plugin\Adminhtml\Shipment\AddLalamoveButton"
+                sortOrder="10"/>
+    </type>
+
+    <!-- Fix PHP 8 "Undefined array key optgroup" warning in product form categories -->
+    <preference for="Magento\Catalog\Ui\Component\Product\Form\Categories\Options"
+                type="Vendor\ApiShipping\Preference\Catalog\CategoriesOptions"/>
+
+</config>

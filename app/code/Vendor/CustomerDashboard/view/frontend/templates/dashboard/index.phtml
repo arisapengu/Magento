@@ -1,0 +1,253 @@
+<?php
+/** @var \Vendor\CustomerDashboard\Block\Dashboard $block */
+$monthly    = $block->getMonthlyStats();
+$yearTotal  = number_format($block->getYearTotal(), 2);
+$monthTotal = number_format($block->getMonthTotal(), 2);
+$labelsJson  = json_encode($monthly['labels']);
+$amountsJson = json_encode($monthly['amounts']);
+$currentMonth = date('M Y');
+$currentYear  = date('Y');
+?>
+
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --red:     #D72638;
+        --red-dim: #a01c2a;
+        --dark:    #111318;
+        --card:    #1a1d24;
+        --card2:   #22262f;
+        --border:  #2e3340;
+        --text:    #e8eaf0;
+        --muted:   #7a8099;
+        --accent:  #ff4d6d;
+    }
+
+    .db-wrap {
+        font-family: 'Sora', sans-serif;
+        background: var(--dark);
+        color: var(--text);
+        border-radius: 16px;
+        padding: 32px;
+        max-width: 960px;
+        margin: 0 auto;
+    }
+
+    .db-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 28px;
+    }
+
+    .db-header h1 {
+        font-size: 1.6rem;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+
+    .db-header h1 span {
+        color: var(--red);
+    }
+
+    .db-header .year-badge {
+        font-family: 'Space Mono', monospace;
+        font-size: 0.75rem;
+        color: var(--muted);
+        background: var(--card2);
+        border: 1px solid var(--border);
+        padding: 6px 14px;
+        border-radius: 20px;
+    }
+
+    /* Stat cards row */
+    .db-stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .stat-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 20px 24px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: var(--red);
+    }
+
+    .stat-card .label {
+        font-size: 0.72rem;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        margin-bottom: 8px;
+    }
+
+    .stat-card .amount {
+        font-family: 'Space Mono', monospace;
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1;
+    }
+
+    .stat-card .sub {
+        font-size: 0.75rem;
+        color: var(--muted);
+        margin-top: 6px;
+    }
+
+    /* Chart area */
+    .db-chart-card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 24px;
+    }
+
+    .chart-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .chart-header .title {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text);
+    }
+
+    .chart-header .subtitle {
+        font-size: 0.72rem;
+        color: var(--muted);
+        margin-top: 2px;
+    }
+
+    .chart-legend {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.72rem;
+        color: var(--muted);
+    }
+
+    .chart-legend .dot {
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        background: var(--red);
+    }
+
+    canvas#orderChart {
+        width: 100% !important;
+        max-height: 240px;
+    }
+</style>
+
+<div class="db-wrap">
+    <div class="db-header">
+        <h1>My <span>Dashboard</span></h1>
+        <span class="year-badge"><?= $escaper->escapeHtml($currentYear) ?></span>
+    </div>
+
+    <div class="db-stats">
+        <div class="stat-card">
+            <div class="label">This Year</div>
+            <div class="amount">฿<?= $escaper->escapeHtml($yearTotal) ?></div>
+            <div class="sub">Total order amount <?= $escaper->escapeHtml($currentYear) ?></div>
+        </div>
+        <div class="stat-card">
+            <div class="label">This Month</div>
+            <div class="amount">฿<?= $escaper->escapeHtml($monthTotal) ?></div>
+            <div class="sub"><?= $escaper->escapeHtml($currentMonth) ?></div>
+        </div>
+    </div>
+
+    <div class="db-chart-card">
+        <div class="chart-header">
+            <div>
+                <div class="title">Monthly Order Amount</div>
+                <div class="subtitle">Jan – Dec <?= $escaper->escapeHtml($currentYear) ?></div>
+            </div>
+            <div class="chart-legend">
+                <span class="dot"></span> Order Total (THB)
+            </div>
+        </div>
+        <canvas id="orderChart"></canvas>
+    </div>
+</div>
+
+<script>
+require(['chartjs'], function (Chart) {
+(function () {
+    const labels  = <?= /* @noEscape */ $labelsJson ?>;
+    const amounts = <?= /* @noEscape */ $amountsJson ?>;
+    const currentMonth = new Date().getMonth(); // 0-indexed
+
+    const backgroundColors = amounts.map((_, i) =>
+        i === currentMonth ? 'rgba(215,38,56,0.95)' : 'rgba(215,38,56,0.35)'
+    );
+    const borderColors = amounts.map((_, i) =>
+        i === currentMonth ? '#ff4d6d' : 'rgba(215,38,56,0.6)'
+    );
+
+    const ctx = document.getElementById('orderChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Amount (THB)',
+                data: amounts,
+                backgroundColor: backgroundColors,
+                borderColor: borderColors,
+                borderWidth: 2,
+                borderRadius: 6,
+                borderSkipped: false,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#22262f',
+                    borderColor: '#2e3340',
+                    borderWidth: 1,
+                    titleColor: '#e8eaf0',
+                    bodyColor: '#7a8099',
+                    callbacks: {
+                        label: ctx => ' ฿' + ctx.parsed.y.toLocaleString('th-TH', {minimumFractionDigits: 2})
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#7a8099', font: { family: 'Sora', size: 11 } },
+                    grid: { color: 'rgba(255,255,255,0.04)' }
+                },
+                y: {
+                    ticks: {
+                        color: '#7a8099',
+                        font: { family: 'Space Mono', size: 10 },
+                        callback: v => '฿' + v.toLocaleString()
+                    },
+                    grid: { color: 'rgba(255,255,255,0.06)' }
+                }
+            }
+        }
+    });
+})();
+});
+</script>

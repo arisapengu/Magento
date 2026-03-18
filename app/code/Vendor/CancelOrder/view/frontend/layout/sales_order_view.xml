@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <css src="Vendor_CancelOrder::css/cancel-order.css"/>
+    </head>
+    <body>
+        <referenceBlock name="sales.order.info.buttons">
+            <block class="Vendor\CancelOrder\Block\Order\Cancel"
+                   name="order.cancel.button"
+                   template="Vendor_CancelOrder::order/cancel-button.phtml"
+                   after="-"/>
+        </referenceBlock>
+    </body>
+</page>

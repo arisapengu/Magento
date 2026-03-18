@@ -1,0 +1,9 @@
+<!--@subject Update on Your Cancel Request - Order #{{var order_id}} @-->
+<!--@vars {"var order_id":"Order Number","var customer_name":"Customer First Name","var admin_note":"Admin Note"} @-->
+<p>Dear {{var customer_name}},</p>
+<p>We have reviewed your cancellation request for order <strong>#{{var order_id}}</strong>.</p>
+<p>Unfortunately, your request has been <strong style="color:#d9534f">declined</strong> as the order has already been shipped.</p>
+{{if admin_note}}
+<p><strong>Note from our team:</strong> {{var admin_note}}</p>
+{{/if}}
+<p>If you have any questions, please contact our support team.</p>

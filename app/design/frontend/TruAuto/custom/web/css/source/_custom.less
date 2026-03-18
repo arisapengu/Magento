@@ -1,0 +1,85 @@
+// /**
+//  * TruAuto Custom — CSS overrides
+//  */
+
+.page-header .header.content,
+.page-header > .header.content {
+    background-color: #ffffff !important;
+}
+
+
+header.page-header{
+    background-color: #ffffff !important;
+}
+.minicart-wrapper{
+    color:black;
+    margin-top:-15px !important;
+}
+
+.minicart-wrapper .action.showcart:before{
+    color:#000 !important;
+}
+
+.block.newsletter .actions .action.subscribe.primary {
+    background-color: red;
+}
+
+//
+//  Navigation Dropdown
+//  ---------------------------------------------
+
+.navigation .level0 .submenu,
+.navigation .level0 .submenu.ui-menu {
+    background-color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+
+    // Dropdown item
+    li.ui-menu-item {
+        border-left: 3px solid transparent;
+        border-radius: 0;
+        transition: background-color 0.15s, border-color 0.15s;
+
+        a.ui-menu-item-wrapper {
+            color: #003366;
+            padding: 10px 16px;
+            display: block;
+            font-weight: 500;
+            border-radius: 0;
+        }
+
+        // Hover
+        &:hover {
+            background-color: #f1f5f9;
+            border-left-color: transparent;
+            border-radius: 0;
+
+            a.ui-menu-item-wrapper {
+                color: #003366;
+            }
+        }
+
+        // Active
+        &.active,
+        a.ui-menu-item-wrapper.ui-state-active {
+            background-color: #f1f5f9;
+            border-left: 3px solid #CC0000;
+            border-radius: 0;
+
+            a.ui-menu-item-wrapper,
+            &.ui-menu-item-wrapper {
+                color: #CC0000;
+                font-weight: 600;
+            }
+        }
+    }
+}
+.compare.wrapper{
+    margin-top: -15px !important;
+}
+
+.minicart-items .action.edit:before, .minicart-items .action.delete:before{
+    color:black !important;
+}

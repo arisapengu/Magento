@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="vendor_cancel_order_request" resource="default" engine="innodb" comment="Cancel Order Requests">
+        <column xsi:type="int"       name="request_id"       unsigned="true" nullable="false" identity="true" comment="Request ID"/>
+        <column xsi:type="int"       name="order_id"         unsigned="true" nullable="false" comment="Order ID"/>
+        <column xsi:type="varchar"   name="order_increment_id" nullable="false" length="50"  comment="Order Increment ID"/>
+        <column xsi:type="int"       name="customer_id"      unsigned="true" nullable="true"  comment="Customer ID"/>
+        <column xsi:type="varchar"   name="customer_name"    nullable="false" length="255"    comment="Customer Name"/>
+        <column xsi:type="varchar"   name="customer_email"   nullable="false" length="255"    comment="Customer Email"/>
+        <column xsi:type="varchar"   name="reason"           nullable="true"  length="500"    comment="Cancel Reason"/>
+        <column xsi:type="varchar"   name="status"           nullable="false" length="50" default="pending" comment="Status: pending/approved/rejected"/>
+        <column xsi:type="text"      name="admin_note"       nullable="true"  comment="Admin Note"/>
+        <column xsi:type="int"       name="creditmemo_id"    unsigned="true" nullable="true"  comment="Credit Memo ID"/>
+        <column xsi:type="timestamp" name="created_at"       on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at"       on_update="true"  nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="request_id"/>
+        </constraint>
+        <index referenceId="VENDOR_CANCEL_ORDER_REQUEST_ORDER_ID" indexType="btree">
+            <column name="order_id"/>
+        </index>
+        <index referenceId="VENDOR_CANCEL_ORDER_REQUEST_STATUS" indexType="btree">
+            <column name="status"/>
+        </index>
+    </table>
+</schema>

@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <carriers>
+            <kerry>
+                <active>1</active>
+                <title>Kerry Express</title>
+                <name>Standard Delivery</name>
+                <flatrate>50</flatrate>
+                <api_url></api_url>
+                <api_key></api_key>
+                <sallowspecific>0</sallowspecific>
+                <model>Vendor\ApiShipping\Model\Carrier\Kerry</model>
+            </kerry>
+            <thaipost>
+                <active>1</active>
+                <title>Thailand Post</title>
+                <name>Standard Delivery</name>
+                <flatrate>40</flatrate>
+                <api_url></api_url>
+                <api_key></api_key>
+                <sallowspecific>0</sallowspecific>
+                <model>Vendor\ApiShipping\Model\Carrier\ThaiPost</model>
+            </thaipost>
+            <flash>
+                <active>1</active>
+                <title>Flash Express</title>
+                <name>Standard Delivery</name>
+                <flatrate>45</flatrate>
+                <api_url></api_url>
+                <api_key></api_key>
+                <sallowspecific>0</sallowspecific>
+                <model>Vendor\ApiShipping\Model\Carrier\Flash</model>
+            </flash>
+            <jnt>
+                <active>1</active>
+                <title>J&amp;T Express</title>
+                <name>Standard Delivery</name>
+                <flatrate>45</flatrate>
+                <api_url></api_url>
+                <api_key></api_key>
+                <sallowspecific>0</sallowspecific>
+                <model>Vendor\ApiShipping\Model\Carrier\Jnt</model>
+            </jnt>
+            <lalamove>
+                <active>1</active>
+                <title>Lalamove</title>
+                <price_sameday>120</price_sameday>
+                <price_within24>90</price_within24>
+                <api_url>https://rest.sandbox.lalamove.com</api_url>
+                <api_key></api_key>
+                <api_secret></api_secret>
+                <market>TH</market>
+                <service_type>MOTORCYCLE</service_type>
+                <store_lat></store_lat>
+                <store_lng></store_lng>
+                <store_address></store_address>
+                <gmaps_key></gmaps_key>
+                <sender_name></sender_name>
+                <sender_phone></sender_phone>
+                <sallowspecific>0</sallowspecific>
+                <model>Vendor\ApiShipping\Model\Carrier\Lalamove</model>
+            </lalamove>
+        </carriers>
+    </default>
+</config>

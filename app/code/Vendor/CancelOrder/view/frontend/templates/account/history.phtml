@@ -1,0 +1,69 @@
+<?php
+/**
+ * @var \Vendor\CancelOrder\Block\Account\CancelHistory $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+$requests = $block->getRequests();
+
+?>
+<div class="cancel-history">
+    <div class="cancel-history__head">
+        <h2 class="cancel-history__title"><?= $escaper->escapeHtml(__('My Cancellations')) ?></h2>
+    </div>
+
+    <?php if (!$requests->count()): ?>
+        <div class="cancel-history__empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40">
+                <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+            </svg>
+            <p><?= $escaper->escapeHtml(__('You have no cancellation requests.')) ?></p>
+        </div>
+    <?php else: ?>
+        <table class="cancel-history__table data table">
+            <thead>
+                <tr>
+                    <th><?= $escaper->escapeHtml(__('Order #')) ?></th>
+                    <th><?= $escaper->escapeHtml(__('Reason')) ?></th>
+                    <th><?= $escaper->escapeHtml(__('Status')) ?></th>
+                    <th><?= $escaper->escapeHtml(__('Admin Note')) ?></th>
+                    <th><?= $escaper->escapeHtml(__('Date')) ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($requests as $req): ?>
+                <tr>
+                    <td>
+                        <a href="<?= $escaper->escapeUrl($block->getOrderUrl($req->getOrderIncrementId())) ?>">
+                            #<?= $escaper->escapeHtml($req->getOrderIncrementId()) ?>
+                        </a>
+                    </td>
+                    <td><?= $escaper->escapeHtml($req->getReason() ?: '-') ?></td>
+                    <td>
+                        <span class="cancel-status cancel-status--<?= $escaper->escapeHtmlAttr($block->getStatusClass($req->getStatus())) ?>">
+                            <?= $escaper->escapeHtml($block->getStatusLabel($req->getStatus())) ?>
+                        </span>
+                    </td>
+                    <td><?= $escaper->escapeHtml($req->getAdminNote() ?: '-') ?></td>
+                    <td><?= $escaper->escapeHtml($req->getCreatedAt()) ?></td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php endif; ?>
+</div>
+
+<style>
+.cancel-history { padding: 0 0 24px; }
+.cancel-history__head { margin-bottom: 20px; }
+.cancel-history__title { font-size: 20px; font-weight: 700; color: #111; margin: 0; }
+.cancel-history__empty { text-align: center; padding: 40px 20px; color: #999; }
+.cancel-history__empty svg { margin-bottom: 12px; stroke: #ccc; }
+.cancel-history__empty p { font-size: 15px; margin: 0; }
+.cancel-history__table { width: 100%; border-collapse: collapse; }
+.cancel-history__table th, .cancel-history__table td { padding: 12px 14px; border-bottom: 1px solid #f0f0f0; text-align: left; font-size: 14px; }
+.cancel-history__table th { font-weight: 600; color: #555; background: #fafafa; }
+.cancel-status { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+.cancel-status--pending  { background: #fff8e1; color: #f59e0b; }
+.cancel-status--approved { background: #e8f5e9; color: #2e7d32; }
+.cancel-status--rejected { background: #fff5f5; color: #c62828; }
+</style>
