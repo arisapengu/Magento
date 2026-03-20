@@ -1,0 +1,67 @@
+<?php
+/** @var \Vendor\FitmentSearch\Block\Search\Form $block */
+declare(strict_types=1);
+
+$selectedVehicle = $block->getSelectedVehicle();
+$makesUrl        = $block->getAjaxUrl('getMakes');
+$modelsUrl       = $block->getAjaxUrl('getModels');
+$yearsUrl        = $block->getAjaxUrl('getYears');
+$searchUrl       = $block->getSearchUrl();
+$clearUrl        = $block->getClearUrl();
+?>
+<link rel="stylesheet" type="text/css"
+      href="<?= $block->escapeHtmlAttr($block->getViewFileUrl('Vendor_FitmentSearch::css/fitment-search.css')) ?>"/>
+
+<div class="fitment-search-card">
+    <h2><?= $block->escapeHtml(__('ค้นหาอะไหล่ตามรุ่นรถ')) ?></h2>
+    <p class="subtitle"><?= $block->escapeHtml(__('เลือกยี่ห้อ รุ่น และปีรถของคุณเพื่อค้นหาอะไหล่ที่เหมาะสม')) ?></p>
+
+    <?php if ($selectedVehicle): ?>
+        <div class="fitment-vehicle-banner">
+            <span>
+                &#128663;
+                <?= $block->escapeHtml($selectedVehicle['make'] . ' ' . $selectedVehicle['model'] . ' ' . $selectedVehicle['year']) ?>
+            </span>
+            <a href="#" id="fitment-clear-btn">
+                <?= $block->escapeHtml(__('เปลี่ยน')) ?>
+            </a>
+        </div>
+    <?php endif; ?>
+
+    <div class="fitment-form-group">
+        <label for="fitment-make"><?= $block->escapeHtml(__('ยี่ห้อรถ')) ?></label>
+        <select id="fitment-make" name="make" class="fitment-select">
+            <option value="" disabled selected><?= $block->escapeHtml(__('-- เลือกยี่ห้อ --')) ?></option>
+        </select>
+    </div>
+
+    <div class="fitment-form-group">
+        <label for="fitment-model"><?= $block->escapeHtml(__('รุ่นรถ')) ?></label>
+        <select id="fitment-model" name="model" class="fitment-select" disabled>
+            <option value="" disabled selected><?= $block->escapeHtml(__('-- เลือกรุ่นรถ --')) ?></option>
+        </select>
+    </div>
+
+    <div class="fitment-form-group">
+        <label for="fitment-year"><?= $block->escapeHtml(__('ปีรถ')) ?></label>
+        <select id="fitment-year" name="year" class="fitment-select" disabled>
+            <option value="" disabled selected><?= $block->escapeHtml(__('-- เลือกปี --')) ?></option>
+        </select>
+    </div>
+
+    <button type="button" id="fitment-search-btn" class="fitment-search-btn" disabled>
+        &#128269; <?= $block->escapeHtml(__('ค้นหาอะไหล่')) ?>
+    </button>
+</div>
+
+<script type="text/javascript">
+    require(['fitmentSearch'], function (fs) {
+        fs.initForm({
+            makesUrl:  '<?= $block->escapeJs($makesUrl) ?>',
+            modelsUrl: '<?= $block->escapeJs($modelsUrl) ?>',
+            yearsUrl:  '<?= $block->escapeJs($yearsUrl) ?>',
+            searchUrl: '<?= $block->escapeJs($searchUrl) ?>',
+            clearUrl:  '<?= $block->escapeJs($clearUrl) ?>'
+        });
+    });
+</script>

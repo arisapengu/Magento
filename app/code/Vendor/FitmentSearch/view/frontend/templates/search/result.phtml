@@ -1,0 +1,140 @@
+<?php
+/** @var \Vendor\FitmentSearch\Block\Search\Result $block */
+declare(strict_types=1);
+
+$products      = $block->getProducts();
+$vehicleLabel  = $block->getVehicleLabel();
+$productCount  = $products ? $products->getSize() : 0;
+$makesUrl      = $block->getAjaxUrl('getMakes');
+$modelsUrl     = $block->getAjaxUrl('getModels');
+$yearsUrl      = $block->getAjaxUrl('getYears');
+$searchUrl     = $block->getSearchUrl();
+$clearUrl      = $block->getClearUrl();
+$formUrl       = $block->getFormUrl();
+$make          = (string)$block->getData('make');
+$model         = (string)$block->getData('model');
+$year          = (string)$block->getData('year');
+?>
+<link rel="stylesheet" type="text/css"
+      href="<?= $block->escapeHtmlAttr($block->getViewFileUrl('Vendor_FitmentSearch::css/fitment-search.css')) ?>"/>
+
+<div class="fitment-results-page">
+
+    <!-- ====================================================
+         Sidebar
+         ==================================================== -->
+    <aside class="fitment-sidebar">
+
+        <!-- Current vehicle card -->
+        <div class="fitment-vehicle-card">
+            <h3><?= $block->escapeHtml(__('รถของคุณ')) ?></h3>
+            <div class="vehicle-name"><?= $block->escapeHtml($vehicleLabel) ?></div>
+        </div>
+
+        <a href="<?= $block->escapeHtmlAttr($formUrl) ?>" class="fitment-change-btn">
+            <?= $block->escapeHtml(__('เปลี่ยนรุ่นรถ')) ?>
+        </a>
+
+        <!-- Compact search form inside sidebar -->
+        <div class="fitment-vehicle-card" style="margin-top:1rem;">
+            <h3><?= $block->escapeHtml(__('ค้นหารุ่นอื่น')) ?></h3>
+
+            <div class="fitment-form-group">
+                <label for="fitment-widget-make"><?= $block->escapeHtml(__('ยี่ห้อ')) ?></label>
+                <select id="fitment-widget-make" name="make" class="fitment-select">
+                    <option value="" disabled selected><?= $block->escapeHtml(__('-- ยี่ห้อ --')) ?></option>
+                </select>
+            </div>
+
+            <div class="fitment-form-group">
+                <label for="fitment-widget-model"><?= $block->escapeHtml(__('รุ่น')) ?></label>
+                <select id="fitment-widget-model" name="model" class="fitment-select" disabled>
+                    <option value="" disabled selected><?= $block->escapeHtml(__('-- รุ่น --')) ?></option>
+                </select>
+            </div>
+
+            <div class="fitment-form-group">
+                <label for="fitment-widget-year"><?= $block->escapeHtml(__('ปี')) ?></label>
+                <select id="fitment-widget-year" name="year" class="fitment-select" disabled>
+                    <option value="" disabled selected><?= $block->escapeHtml(__('-- ปี --')) ?></option>
+                </select>
+            </div>
+
+            <button type="button" id="fitment-widget-search-btn" class="fitment-search-btn" disabled
+                    style="height:44px;font-size:0.9rem;margin-top:0.25rem;">
+                <?= $block->escapeHtml(__('ค้นหา')) ?>
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- ====================================================
+         Main content area
+         ==================================================== -->
+    <main class="fitment-results-main">
+
+        <div class="fitment-results-header">
+            <h1>
+                <?= $block->escapeHtml(__('อะไหล่สำหรับ')) ?>
+                <?= $block->escapeHtml($vehicleLabel) ?>
+            </h1>
+            <div class="count">
+                <?= $block->escapeHtml(__('พบ')) ?>
+                <?= (int)$productCount ?>
+                <?= $block->escapeHtml(__('รายการ')) ?>
+            </div>
+        </div>
+
+        <div class="fitment-product-grid">
+
+            <?php if ($products && $productCount > 0): ?>
+                <?php foreach ($products as $product): ?>
+                    <div class="fitment-product-card">
+                        <a href="<?= $block->escapeHtmlAttr($block->getProductUrl($product)) ?>">
+                            <img class="product-image"
+                                 src="<?= $block->escapeHtmlAttr($block->getProductImageUrl($product)) ?>"
+                                 alt="<?= $block->escapeHtmlAttr($product->getName()) ?>"
+                                 loading="lazy"/>
+                        </a>
+                        <div class="product-info">
+                            <div class="product-name">
+                                <?= $block->escapeHtml($product->getName()) ?>
+                            </div>
+                            <div class="product-price">
+                                <?= /* @noEscape */ $block->getFormattedPrice((float)$product->getPrice()) ?>
+                            </div>
+                            <a class="product-link"
+                               href="<?= $block->escapeHtmlAttr($block->getProductUrl($product)) ?>">
+                                <?= $block->escapeHtml(__('ดูรายละเอียด')) ?>
+                            </a>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="fitment-empty-state">
+                    <div class="empty-icon">&#128663;</div>
+                    <h3><?= $block->escapeHtml(__('ไม่พบอะไหล่สำหรับรถรุ่นนี้')) ?></h3>
+                    <p><?= $block->escapeHtml(__('ลองเปลี่ยนรุ่นรถหรือติดต่อเรา')) ?></p>
+                    <a href="<?= $block->escapeHtmlAttr($formUrl) ?>" class="retry-btn">
+                        <?= $block->escapeHtml(__('เลือกรถรุ่นใหม่')) ?>
+                    </a>
+                </div>
+            <?php endif; ?>
+
+        </div><!-- /.fitment-product-grid -->
+
+    </main>
+
+</div><!-- /.fitment-results-page -->
+
+<script type="text/javascript">
+    require(['fitmentSearch'], function (fs) {
+        fs.initWidget({
+            makesUrl:  '<?= $block->escapeJs($makesUrl) ?>',
+            modelsUrl: '<?= $block->escapeJs($modelsUrl) ?>',
+            yearsUrl:  '<?= $block->escapeJs($yearsUrl) ?>',
+            searchUrl: '<?= $block->escapeJs($searchUrl) ?>',
+            clearUrl:  '<?= $block->escapeJs($clearUrl) ?>'
+        });
+    });
+</script>
