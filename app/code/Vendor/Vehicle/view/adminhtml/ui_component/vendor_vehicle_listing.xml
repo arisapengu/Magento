@@ -164,15 +164,24 @@
             </settings>
         </column>
 
-        <column name="submodel">
+        <column name="model_code">
             <settings>
-                <label translate="true">Submodel</label>
+                <filter>text</filter>
+                <label translate="true">Model Code</label>
             </settings>
         </column>
 
-        <column name="engine">
+        <column name="model_gen">
             <settings>
-                <label translate="true">Engine</label>
+                <filter>text</filter>
+                <label translate="true">Model Gen</label>
+            </settings>
+        </column>
+
+        <column name="engine_code">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Engine Code</label>
             </settings>
         </column>
 

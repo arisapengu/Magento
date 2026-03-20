@@ -61,7 +61,7 @@ class GetVehicles extends Action
         $tableName  = $this->resourceConnection->getTableName('vendor_vehicle');
 
         $select = $connection->select()
-            ->from($tableName, ['id', 'year_start', 'year_end', 'submodel', 'engine'])
+            ->from($tableName, ['id', 'year_start', 'year_end', 'model_code', 'model_gen', 'engine_code'])
             ->where('make = ?', $make)
             ->where('model = ?', $model)
             ->where('is_active = ?', 1)
@@ -77,21 +77,26 @@ class GetVehicles extends Action
 
             $labelParts = [$vehicle['year_start'] . '-' . $yearEnd];
 
-            if (isset($vehicle['submodel']) && trim($vehicle['submodel']) !== '') {
-                $labelParts[] = trim($vehicle['submodel']);
+            if (isset($vehicle['model_code']) && trim($vehicle['model_code']) !== '') {
+                $labelParts[] = trim($vehicle['model_code']);
             }
 
-            if (isset($vehicle['engine']) && trim($vehicle['engine']) !== '') {
-                $labelParts[] = trim($vehicle['engine']);
+            if (isset($vehicle['model_gen']) && trim($vehicle['model_gen']) !== '') {
+                $labelParts[] = trim($vehicle['model_gen']);
+            }
+
+            if (isset($vehicle['engine_code']) && trim($vehicle['engine_code']) !== '') {
+                $labelParts[] = trim($vehicle['engine_code']);
             }
 
             $data[] = [
-                'value'      => $vehicle['id'],
-                'label'      => implode(' ', $labelParts),
-                'year_start' => $vehicle['year_start'],
-                'year_end'   => $vehicle['year_end'],
-                'submodel'   => $vehicle['submodel'] ?? '',
-                'engine'     => $vehicle['engine'] ?? '',
+                'value'       => $vehicle['id'],
+                'label'       => implode(' ', $labelParts),
+                'year_start'  => $vehicle['year_start'],
+                'year_end'    => $vehicle['year_end'],
+                'model_code'  => $vehicle['model_code'] ?? '',
+                'model_gen'   => $vehicle['model_gen'] ?? '',
+                'engine_code' => $vehicle['engine_code'] ?? '',
             ];
         }
 

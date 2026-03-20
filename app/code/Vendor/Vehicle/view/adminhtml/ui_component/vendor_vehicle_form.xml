@@ -108,9 +108,9 @@
             </settings>
         </field>
 
-        <field name="submodel" sortOrder="50" formElement="input">
+        <field name="model_code" sortOrder="50" formElement="input">
             <settings>
-                <label translate="true">Submodel</label>
+                <label translate="true">Model Code</label>
                 <dataType>text</dataType>
                 <validation>
                     <rule name="max_text_length" xsi:type="number">100</rule>
@@ -118,9 +118,19 @@
             </settings>
         </field>
 
-        <field name="engine" sortOrder="60" formElement="input">
+        <field name="model_gen" sortOrder="55" formElement="input">
             <settings>
-                <label translate="true">Engine</label>
+                <label translate="true">Model Gen</label>
+                <dataType>text</dataType>
+                <validation>
+                    <rule name="max_text_length" xsi:type="number">100</rule>
+                </validation>
+            </settings>
+        </field>
+
+        <field name="engine_code" sortOrder="60" formElement="input">
+            <settings>
+                <label translate="true">Engine Code</label>
                 <dataType>text</dataType>
                 <validation>
                     <rule name="max_text_length" xsi:type="number">100</rule>

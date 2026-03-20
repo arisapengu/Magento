@@ -89,8 +89,9 @@ $vehiclesUrl = $block->getVehiclesUrl();
                     <th class="data-grid-th"><?= $block->escapeHtml(__('Make')) ?></th>
                     <th class="data-grid-th"><?= $block->escapeHtml(__('Model')) ?></th>
                     <th class="data-grid-th"><?= $block->escapeHtml(__('Year')) ?></th>
-                    <th class="data-grid-th"><?= $block->escapeHtml(__('Submodel')) ?></th>
-                    <th class="data-grid-th"><?= $block->escapeHtml(__('Engine')) ?></th>
+                    <th class="data-grid-th"><?= $block->escapeHtml(__('Model Code')) ?></th>
+                    <th class="data-grid-th"><?= $block->escapeHtml(__('Model Gen')) ?></th>
+                    <th class="data-grid-th"><?= $block->escapeHtml(__('Engine Code')) ?></th>
                     <th class="data-grid-th"><?= $block->escapeHtml(__('Note')) ?></th>
                     <th class="data-grid-th"><?= $block->escapeHtml(__('Action')) ?></th>
                 </tr>
@@ -98,7 +99,7 @@ $vehiclesUrl = $block->getVehiclesUrl();
             <tbody id="fitment-table-body">
                 <?php if (empty($existingFitments)): ?>
                     <tr id="fitment-no-data-row">
-                        <td colspan="7" class="data-grid-td" style="text-align:center;">
+                        <td colspan="8" class="data-grid-td" style="text-align:center;">
                             <?= $block->escapeHtml(__('No fitments found for this product.')) ?>
                         </td>
                     </tr>
@@ -112,8 +113,9 @@ $vehiclesUrl = $block->getVehiclesUrl();
                             <td class="data-grid-td"><?= $block->escapeHtml($fitment['make']) ?></td>
                             <td class="data-grid-td"><?= $block->escapeHtml($fitment['model']) ?></td>
                             <td class="data-grid-td"><?= $block->escapeHtml($yearRange) ?></td>
-                            <td class="data-grid-td"><?= $block->escapeHtml($fitment['submodel'] ?? '') ?></td>
-                            <td class="data-grid-td"><?= $block->escapeHtml($fitment['engine'] ?? '') ?></td>
+                            <td class="data-grid-td"><?= $block->escapeHtml($fitment['model_code'] ?? '') ?></td>
+                            <td class="data-grid-td"><?= $block->escapeHtml($fitment['model_gen'] ?? '') ?></td>
+                            <td class="data-grid-td"><?= $block->escapeHtml($fitment['engine_code'] ?? '') ?></td>
                             <td class="data-grid-td"><?= $block->escapeHtml($fitment['note'] ?? '') ?></td>
                             <td class="data-grid-td">
                                 <button type="button"
@@ -157,11 +159,14 @@ require(['jquery'], function ($) {
     function buildVehicleLabel(v) {
         var yearEnd = (v.year_end && String(v.year_end).trim() !== '') ? v.year_end : 'present';
         var parts = [v.year_start + '-' + yearEnd];
-        if (v.submodel && String(v.submodel).trim() !== '') {
-            parts.push(String(v.submodel).trim());
+        if (v.model_code && String(v.model_code).trim() !== '') {
+            parts.push(String(v.model_code).trim());
         }
-        if (v.engine && String(v.engine).trim() !== '') {
-            parts.push(String(v.engine).trim());
+        if (v.model_gen && String(v.model_gen).trim() !== '') {
+            parts.push(String(v.model_gen).trim());
+        }
+        if (v.engine_code && String(v.engine_code).trim() !== '') {
+            parts.push(String(v.engine_code).trim());
         }
         return parts.join(' ');
     }
@@ -206,7 +211,9 @@ require(['jquery'], function ($) {
         $.get(vehiclesUrl, { make: make, model: model }, function (data) {
             if (data && data.length) {
                 $.each(data, function (i, v) {
-                    $vehicleSelect.append($('<option>').val(v.value).text(v.label));
+                    $vehicleSelect.append(
+                        $('<option>').val(v.value).text(v.label).data('vehicle', v)
+                    );
                 });
                 $vehicleSelect.prop('disabled', false);
             }
@@ -248,15 +255,13 @@ require(['jquery'], function ($) {
                 $row.append($('<td class="data-grid-td">').text(make));
                 $row.append($('<td class="data-grid-td">').text(model));
 
-                /* year range is part of vehicleLabel */
-                var labelParts = vehicleLabel.split(' ');
-                var yearRange = labelParts[0] || '';
-                var submodel  = labelParts.length > 2 ? labelParts[1] : '';
-                var engine    = labelParts.length > 2 ? labelParts.slice(2).join(' ') : (labelParts[1] || '');
+                var $selectedOption = $('#fitment-vehicle option:selected');
+                var vData = $selectedOption.data('vehicle') || {};
 
-                $row.append($('<td class="data-grid-td">').text(yearRange));
-                $row.append($('<td class="data-grid-td">').text(submodel));
-                $row.append($('<td class="data-grid-td">').text(engine));
+                $row.append($('<td class="data-grid-td">').text(vehicleLabel));
+                $row.append($('<td class="data-grid-td">').text(vData.model_code || ''));
+                $row.append($('<td class="data-grid-td">').text(vData.model_gen || ''));
+                $row.append($('<td class="data-grid-td">').text(vData.engine_code || ''));
                 $row.append($('<td class="data-grid-td">').text(noteVal));
 
                 var $btn = $('<button type="button" class="action-default scalable fitment-remove-btn">')
@@ -294,7 +299,7 @@ require(['jquery'], function ($) {
                 $row.remove();
                 if ($('#fitment-table-body tr').length === 0) {
                     $('#fitment-table-body').append(
-                        '<tr id="fitment-no-data-row"><td colspan="7" class="data-grid-td" style="text-align:center;"><?= $block->escapeJs(__('No fitments found for this product.')) ?></td></tr>'
+                        '<tr id="fitment-no-data-row"><td colspan="8" class="data-grid-td" style="text-align:center;"><?= $block->escapeJs(__('No fitments found for this product.')) ?></td></tr>'
                     );
                 }
                 showMessage('<?= $block->escapeJs(__('Fitment removed successfully.')) ?>', 'success');

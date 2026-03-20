@@ -7,8 +7,9 @@
         <column xsi:type="varchar" name="model" nullable="false" length="100" comment="Model"/>
         <column xsi:type="smallint" name="year_start" nullable="false" comment="Year Start"/>
         <column xsi:type="smallint" name="year_end" nullable="true" comment="Year End"/>
-        <column xsi:type="varchar" name="submodel" nullable="true" length="100" comment="Submodel"/>
-        <column xsi:type="varchar" name="engine" nullable="true" length="100" comment="Engine"/>
+        <column xsi:type="varchar" name="model_code" nullable="true" length="100" comment="Model Code"/>
+        <column xsi:type="varchar" name="model_gen" nullable="true" length="100" comment="Model Gen"/>
+        <column xsi:type="varchar" name="engine_code" nullable="true" length="100" comment="Engine Code"/>
         <column xsi:type="smallint" name="is_active" nullable="false" default="1" comment="Is Active"/>
         <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
         <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP" comment="Updated At"/>

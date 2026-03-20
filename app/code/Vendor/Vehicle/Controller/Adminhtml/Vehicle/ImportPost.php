@@ -87,18 +87,22 @@ class ImportPost extends Action
                 ? (int)$data['year_end']
                 : null;
 
+            // Backward-compatible: old CSVs may have 'submodel'/'engine' columns
+            $modelCodeRaw  = $data['model_code'] ?? $data['submodel'] ?? '';
+            $engineCodeRaw = $data['engine_code'] ?? $data['engine'] ?? '';
+            $modelGenRaw   = $data['model_gen'] ?? '';
+
             $rows[] = [
-                'make'       => trim((string)$data['make']),
-                'model'      => trim((string)$data['model']),
-                'year_start' => $yearStart,
-                'year_end'   => $yearEnd,
-                'submodel'   => isset($data['submodel']) && trim((string)$data['submodel']) !== ''
-                    ? trim((string)$data['submodel']) : null,
-                'engine'     => isset($data['engine']) && trim((string)$data['engine']) !== ''
-                    ? trim((string)$data['engine']) : null,
-                'is_active'  => 1,
-                'created_at' => $now,
-                'updated_at' => $now,
+                'make'        => trim((string)$data['make']),
+                'model'       => trim((string)$data['model']),
+                'year_start'  => $yearStart,
+                'year_end'    => $yearEnd,
+                'model_code'  => trim((string)$modelCodeRaw) !== '' ? trim((string)$modelCodeRaw) : null,
+                'model_gen'   => trim((string)$modelGenRaw) !== '' ? trim((string)$modelGenRaw) : null,
+                'engine_code' => trim((string)$engineCodeRaw) !== '' ? trim((string)$engineCodeRaw) : null,
+                'is_active'   => 1,
+                'created_at'  => $now,
+                'updated_at'  => $now,
             ];
         }
 

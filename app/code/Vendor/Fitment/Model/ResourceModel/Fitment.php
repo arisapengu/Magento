@@ -52,7 +52,7 @@ class Fitment extends AbstractDb
             ->join(
                 ['v' => $this->getTable('vendor_vehicle')],
                 'f.vehicle_id = v.id',
-                ['make', 'model', 'year_start', 'year_end', 'submodel', 'engine']
+                ['make', 'model', 'year_start', 'year_end', 'model_code', 'model_gen', 'engine_code']
             )
             ->where('f.product_id = ?', $productId)
             ->order(['v.make ASC', 'v.model ASC', 'v.year_start ASC']);

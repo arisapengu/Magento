@@ -37,14 +37,19 @@ class Vehicle extends AbstractModel implements VehicleInterface
         return $val !== null ? (int)$val : null;
     }
 
-    public function getSubmodel(): ?string
+    public function getModelCode(): ?string
     {
-        return $this->getData(self::SUBMODEL);
+        return $this->getData(self::MODEL_CODE);
     }
 
-    public function getEngine(): ?string
+    public function getModelGen(): ?string
     {
-        return $this->getData(self::ENGINE);
+        return $this->getData(self::MODEL_GEN);
+    }
+
+    public function getEngineCode(): ?string
+    {
+        return $this->getData(self::ENGINE_CODE);
     }
 
     public function getIsActive(): int
@@ -72,14 +77,19 @@ class Vehicle extends AbstractModel implements VehicleInterface
         return $this->setData(self::YEAR_END, $yearEnd);
     }
 
-    public function setSubmodel(?string $submodel): self
+    public function setModelCode(?string $modelCode): self
     {
-        return $this->setData(self::SUBMODEL, $submodel);
+        return $this->setData(self::MODEL_CODE, $modelCode);
     }
 
-    public function setEngine(?string $engine): self
+    public function setModelGen(?string $modelGen): self
     {
-        return $this->setData(self::ENGINE, $engine);
+        return $this->setData(self::MODEL_GEN, $modelGen);
+    }
+
+    public function setEngineCode(?string $engineCode): self
+    {
+        return $this->setData(self::ENGINE_CODE, $engineCode);
     }
 
     public function setIsActive(int $isActive): self
