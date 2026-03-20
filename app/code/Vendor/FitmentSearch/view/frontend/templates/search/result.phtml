@@ -35,37 +35,6 @@ $year          = (string)$block->getData('year');
             <?= $block->escapeHtml(__('เปลี่ยนรุ่นรถ')) ?>
         </a>
 
-        <!-- Compact search form inside sidebar -->
-        <div class="fitment-vehicle-card" style="margin-top:1rem;">
-            <h3><?= $block->escapeHtml(__('ค้นหารุ่นอื่น')) ?></h3>
-
-            <div class="fitment-form-group">
-                <label for="fitment-widget-make"><?= $block->escapeHtml(__('ยี่ห้อ')) ?></label>
-                <select id="fitment-widget-make" name="make" class="fitment-select">
-                    <option value="" disabled selected><?= $block->escapeHtml(__('-- ยี่ห้อ --')) ?></option>
-                </select>
-            </div>
-
-            <div class="fitment-form-group">
-                <label for="fitment-widget-model"><?= $block->escapeHtml(__('รุ่น')) ?></label>
-                <select id="fitment-widget-model" name="model" class="fitment-select" disabled>
-                    <option value="" disabled selected><?= $block->escapeHtml(__('-- รุ่น --')) ?></option>
-                </select>
-            </div>
-
-            <div class="fitment-form-group">
-                <label for="fitment-widget-year"><?= $block->escapeHtml(__('ปี')) ?></label>
-                <select id="fitment-widget-year" name="year" class="fitment-select" disabled>
-                    <option value="" disabled selected><?= $block->escapeHtml(__('-- ปี --')) ?></option>
-                </select>
-            </div>
-
-            <button type="button" id="fitment-widget-search-btn" class="fitment-search-btn" disabled
-                    style="height:44px;font-size:0.9rem;margin-top:0.25rem;">
-                <?= $block->escapeHtml(__('ค้นหา')) ?>
-            </button>
-        </div>
-
     </aside>
 
     <!-- ====================================================
@@ -127,14 +96,3 @@ $year          = (string)$block->getData('year');
 
 </div><!-- /.fitment-results-page -->
 
-<script type="text/javascript">
-    require(['fitmentSearch'], function (fs) {
-        fs.initWidget({
-            makesUrl:  '<?= $block->escapeJs($makesUrl) ?>',
-            modelsUrl: '<?= $block->escapeJs($modelsUrl) ?>',
-            yearsUrl:  '<?= $block->escapeJs($yearsUrl) ?>',
-            searchUrl: '<?= $block->escapeJs($searchUrl) ?>',
-            clearUrl:  '<?= $block->escapeJs($clearUrl) ?>'
-        });
-    });
-</script>

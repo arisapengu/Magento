@@ -28,7 +28,7 @@ define(['jquery'], function ($) {
         if (loading) {
             $select.addClass('fitment-loading').prop('disabled', true);
         } else {
-            $select.removeClass('fitment-loading');
+            $select.removeClass('fitment-loading').prop('disabled', false);
         }
     }
 

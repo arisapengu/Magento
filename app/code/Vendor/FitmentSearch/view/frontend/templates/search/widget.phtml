@@ -13,12 +13,9 @@ $clearUrl        = $block->getClearUrl();
       href="<?= $block->escapeHtmlAttr($block->getViewFileUrl('Vendor_FitmentSearch::css/fitment-search.css')) ?>"/>
 
 <?php if ($selectedVehicle): ?>
-    <!-- ================================================================
-         Vehicle already selected → show pill with clear button
-         ================================================================ -->
     <div class="fitment-widget">
+        <div class="fitment-widget-title">🚗 <?= $block->escapeHtml(__('รถของคุณ')) ?></div>
         <div class="fitment-widget-pill">
-            &#128663;&nbsp;
             <span>
                 <?= $block->escapeHtml(
                     $selectedVehicle['make'] . ' '
@@ -31,30 +28,27 @@ $clearUrl        = $block->getClearUrl();
                   data-clear-url="<?= $block->escapeHtmlAttr($clearUrl) ?>"
                   title="<?= $block->escapeHtmlAttr(__('ล้างรถที่เลือก')) ?>"
                   role="button"
-                  tabindex="0">
-                &times;
-            </span>
+                  tabindex="0">&times;</span>
         </div>
     </div>
 
 <?php else: ?>
-    <!-- ================================================================
-         No vehicle selected → show cascading selects
-         ================================================================ -->
     <div class="fitment-widget">
+        <div class="fitment-widget-title">🔍 <?= $block->escapeHtml(__('ค้นหาอะไหล่ตามรุ่นรถ')) ?></div>
+
         <select id="fitment-widget-make" name="make" class="fitment-select"
                 aria-label="<?= $block->escapeHtmlAttr(__('ยี่ห้อรถ')) ?>">
-            <option value="" disabled selected><?= $block->escapeHtml(__('-- ยี่ห้อ --')) ?></option>
+            <option value="" disabled selected><?= $block->escapeHtml(__('-- ยี่ห้อรถ --')) ?></option>
         </select>
 
         <select id="fitment-widget-model" name="model" class="fitment-select" disabled
                 aria-label="<?= $block->escapeHtmlAttr(__('รุ่นรถ')) ?>">
-            <option value="" disabled selected><?= $block->escapeHtml(__('-- รุ่น --')) ?></option>
+            <option value="" disabled selected><?= $block->escapeHtml(__('-- รุ่นรถ --')) ?></option>
         </select>
 
         <select id="fitment-widget-year" name="year" class="fitment-select" disabled
                 aria-label="<?= $block->escapeHtmlAttr(__('ปีรถ')) ?>">
-            <option value="" disabled selected><?= $block->escapeHtml(__('-- ปี --')) ?></option>
+            <option value="" disabled selected><?= $block->escapeHtml(__('-- ปีรถ --')) ?></option>
         </select>
 
         <button type="button"
@@ -62,10 +56,9 @@ $clearUrl        = $block->getClearUrl();
                 class="fitment-search-btn"
                 disabled
                 aria-label="<?= $block->escapeHtmlAttr(__('ค้นหาอะไหล่')) ?>">
-            &#128269; <?= $block->escapeHtml(__('ค้นหา')) ?>
+            🔍 <?= $block->escapeHtml(__('ค้นหาอะไหล่')) ?>
         </button>
     </div>
-
 <?php endif; ?>
 
 <script type="text/javascript">

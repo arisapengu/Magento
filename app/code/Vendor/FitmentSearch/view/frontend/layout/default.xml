@@ -2,11 +2,11 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceContainer name="header-wrapper">
+        <referenceContainer name="sidebar.main">
             <block class="Vendor\FitmentSearch\Block\Search\Form"
                    name="fitment_search_widget"
                    template="Vendor_FitmentSearch::search/widget.phtml"
-                   after="-"/>
+                   before="-"/>
         </referenceContainer>
     </body>
 </page>
