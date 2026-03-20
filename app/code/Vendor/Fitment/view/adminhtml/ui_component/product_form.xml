@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="vendor_fitment" sortOrder="150">
+        <settings>
+            <label translate="true">Fitment</label>
+            <collapsible>true</collapsible>
+            <opened>false</opened>
+        </settings>
+        <htmlContent name="vendor_fitment_content">
+            <block class="Vendor\Fitment\Block\Adminhtml\Product\Tab\Fitment"
+                   name="vendor_fitment_tab"
+                   template="Vendor_Fitment::product/tab/fitment.phtml"/>
+        </htmlContent>
+    </fieldset>
+</form>

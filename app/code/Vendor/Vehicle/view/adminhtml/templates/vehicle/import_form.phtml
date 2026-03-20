@@ -1,0 +1,61 @@
+<?php
+/** @var \Vendor\Vehicle\Block\Adminhtml\Vehicle\ImportForm $block */
+?>
+<div class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?= $block->escapeHtml(__('Import Vehicles from CSV')) ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <div class="admin__fieldset-wrapper">
+            <div class="admin__fieldset-wrapper-content">
+                <p>
+                    <?= $block->escapeHtml(__('CSV must contain the following columns:')) ?>
+                    <strong>make, model, year_start</strong>
+                    <?= $block->escapeHtml(__(', and optional: year_end, submodel, engine')) ?>
+                </p>
+
+                <form action="<?= $block->escapeUrl($block->getImportUrl()) ?>"
+                      method="post"
+                      enctype="multipart/form-data"
+                      id="vehicle-import-form">
+                    <?= $block->getBlockHtml('formkey') ?>
+
+                    <fieldset class="admin__fieldset">
+                        <div class="admin__field _required">
+                            <label class="admin__field-label" for="csv_file">
+                                <span><?= $block->escapeHtml(__('CSV File')) ?></span>
+                            </label>
+                            <div class="admin__field-control">
+                                <input type="file"
+                                       name="csv_file"
+                                       id="csv_file"
+                                       accept=".csv"
+                                       class="admin__control-file"
+                                       required/>
+                                <p class="admin__field-note">
+                                    <?= $block->escapeHtml(__('Accepted format: .csv')) ?>
+                                </p>
+                            </div>
+                        </div>
+                    </fieldset>
+
+                    <div class="page-main-actions">
+                        <div class="page-actions">
+                            <div class="page-actions-inner">
+                                <a href="<?= $block->escapeUrl($block->getBackUrl()) ?>"
+                                   class="action-default scalable back">
+                                    <span><?= $block->escapeHtml(__('Back')) ?></span>
+                                </a>
+                                <button type="submit"
+                                        class="action-default scalable save primary"
+                                        title="<?= $block->escapeHtmlAttr(__('Import')) ?>">
+                                    <span><?= $block->escapeHtml(__('Import')) ?></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

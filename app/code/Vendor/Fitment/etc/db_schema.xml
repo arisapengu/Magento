@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="vendor_product_fitment" resource="default" engine="innodb" comment="Vendor Product Fitment">
+        <column xsi:type="int" name="id" unsigned="true" nullable="false" identity="true" comment="Fitment ID"/>
+        <column xsi:type="int" name="product_id" unsigned="true" nullable="false" comment="Product ID"/>
+        <column xsi:type="int" name="vehicle_id" unsigned="true" nullable="false" comment="Vehicle ID"/>
+        <column xsi:type="varchar" name="note" nullable="true" length="255" comment="Note"/>
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+        <constraint xsi:type="foreign" referenceId="VENDOR_PRODUCT_FITMENT_PRODUCT_ID_CATALOG_PRODUCT_ENTITY_ENTITY_ID"
+                    table="vendor_product_fitment" column="product_id"
+                    referenceTable="catalog_product_entity" referenceColumn="entity_id"
+                    onDelete="CASCADE"/>
+        <constraint xsi:type="foreign" referenceId="VENDOR_PRODUCT_FITMENT_VEHICLE_ID_VENDOR_VEHICLE_ID"
+                    table="vendor_product_fitment" column="vehicle_id"
+                    referenceTable="vendor_vehicle" referenceColumn="id"
+                    onDelete="CASCADE"/>
+        <constraint xsi:type="unique" referenceId="VENDOR_PRODUCT_FITMENT_PRODUCT_ID_VEHICLE_ID">
+            <column name="product_id"/>
+            <column name="vehicle_id"/>
+        </constraint>
+        <index referenceId="VENDOR_PRODUCT_FITMENT_PRODUCT_ID" indexType="btree">
+            <column name="product_id"/>
+        </index>
+        <index referenceId="VENDOR_PRODUCT_FITMENT_VEHICLE_ID" indexType="btree">
+            <column name="vehicle_id"/>
+        </index>
+    </table>
+</schema>

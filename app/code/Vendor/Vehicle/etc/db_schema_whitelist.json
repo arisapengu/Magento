@@ -1,0 +1,23 @@
+{
+    "vendor_vehicle": {
+        "column": {
+            "id": true,
+            "make": true,
+            "model": true,
+            "year_start": true,
+            "year_end": true,
+            "submodel": true,
+            "engine": true,
+            "is_active": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        },
+        "index": {
+            "VENDOR_VEHICLE_MAKE": true,
+            "VENDOR_VEHICLE_MODEL": true
+        }
+    }
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="Vendor\Vehicle\Model\ResourceModel\Vehicle\Grid\Collection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">vendor_vehicle</argument>
+            <argument name="resourceModel" xsi:type="string">Vendor\Vehicle\Model\ResourceModel\Vehicle</argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="vendor_vehicle_listing_data_source"
+                      xsi:type="string">Vendor\Vehicle\Model\ResourceModel\Vehicle\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

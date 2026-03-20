@@ -1,0 +1,309 @@
+<?php
+/** @var \Vendor\Fitment\Block\Adminhtml\Product\Tab\Fitment $block */
+$product = $block->getProduct();
+$productId = $product ? (int)$product->getId() : 0;
+$existingFitments = $block->getExistingFitments();
+$makes = $block->getMakes();
+$saveUrl = $block->getSaveUrl();
+$deleteUrl = $block->getDeleteUrl();
+$modelsUrl = $block->getModelsUrl();
+$vehiclesUrl = $block->getVehiclesUrl();
+?>
+<div class="vendor-fitment-tab" id="vendor-fitment-tab-content">
+
+    <fieldset class="admin__fieldset">
+        <legend class="admin__legend"><span><?= $block->escapeHtml(__('Add Fitment')) ?></span></legend>
+        <br/>
+
+        <div class="admin__field">
+            <label class="admin__field-label" for="fitment-make">
+                <span><?= $block->escapeHtml(__('Make')) ?></span>
+            </label>
+            <div class="admin__field-control">
+                <select id="fitment-make" class="admin__control-select" style="min-width:200px;">
+                    <option value=""><?= $block->escapeHtml(__('-- Select Make --')) ?></option>
+                    <?php foreach ($makes as $make): ?>
+                        <option value="<?= $block->escapeHtmlAttr($make) ?>">
+                            <?= $block->escapeHtml($make) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="admin__field">
+            <label class="admin__field-label" for="fitment-model">
+                <span><?= $block->escapeHtml(__('Model')) ?></span>
+            </label>
+            <div class="admin__field-control">
+                <select id="fitment-model" class="admin__control-select" style="min-width:200px;" disabled>
+                    <option value=""><?= $block->escapeHtml(__('-- Select Model --')) ?></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="admin__field">
+            <label class="admin__field-label" for="fitment-vehicle">
+                <span><?= $block->escapeHtml(__('Vehicle')) ?></span>
+            </label>
+            <div class="admin__field-control">
+                <select id="fitment-vehicle" class="admin__control-select" style="min-width:300px;" disabled>
+                    <option value=""><?= $block->escapeHtml(__('-- Select Vehicle --')) ?></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="admin__field">
+            <label class="admin__field-label" for="fitment-note">
+                <span><?= $block->escapeHtml(__('Note')) ?></span>
+            </label>
+            <div class="admin__field-control">
+                <input type="text"
+                       id="fitment-note"
+                       class="admin__control-text"
+                       style="min-width:300px;"
+                       placeholder="<?= $block->escapeHtmlAttr(__('Optional note')) ?>"/>
+            </div>
+        </div>
+
+        <div class="admin__field">
+            <div class="admin__field-control">
+                <button type="button"
+                        id="fitment-add-btn"
+                        class="action-default scalable action-secondary">
+                    <span><?= $block->escapeHtml(__('Add Fitment')) ?></span>
+                </button>
+            </div>
+        </div>
+
+        <div id="fitment-message" style="display:none; margin-top:10px;" class="message"></div>
+    </fieldset>
+
+    <fieldset class="admin__fieldset" style="margin-top:20px;">
+        <legend class="admin__legend"><span><?= $block->escapeHtml(__('Existing Fitments')) ?></span></legend>
+        <br/>
+
+        <table id="fitment-table" class="data-grid">
+            <thead>
+                <tr class="data-grid-tr-no-data">
+                    <th class="data-grid-th"><?= $block->escapeHtml(__('Make')) ?></th>
+                    <th class="data-grid-th"><?= $block->escapeHtml(__('Model')) ?></th>
+                    <th class="data-grid-th"><?= $block->escapeHtml(__('Year')) ?></th>
+                    <th class="data-grid-th"><?= $block->escapeHtml(__('Submodel')) ?></th>
+                    <th class="data-grid-th"><?= $block->escapeHtml(__('Engine')) ?></th>
+                    <th class="data-grid-th"><?= $block->escapeHtml(__('Note')) ?></th>
+                    <th class="data-grid-th"><?= $block->escapeHtml(__('Action')) ?></th>
+                </tr>
+            </thead>
+            <tbody id="fitment-table-body">
+                <?php if (empty($existingFitments)): ?>
+                    <tr id="fitment-no-data-row">
+                        <td colspan="7" class="data-grid-td" style="text-align:center;">
+                            <?= $block->escapeHtml(__('No fitments found for this product.')) ?>
+                        </td>
+                    </tr>
+                <?php else: ?>
+                    <?php foreach ($existingFitments as $fitment): ?>
+                        <?php
+                            $yearEnd = !empty($fitment['year_end']) ? $fitment['year_end'] : 'present';
+                            $yearRange = $fitment['year_start'] . '-' . $yearEnd;
+                        ?>
+                        <tr data-fitment-id="<?= (int)$fitment['id'] ?>">
+                            <td class="data-grid-td"><?= $block->escapeHtml($fitment['make']) ?></td>
+                            <td class="data-grid-td"><?= $block->escapeHtml($fitment['model']) ?></td>
+                            <td class="data-grid-td"><?= $block->escapeHtml($yearRange) ?></td>
+                            <td class="data-grid-td"><?= $block->escapeHtml($fitment['submodel'] ?? '') ?></td>
+                            <td class="data-grid-td"><?= $block->escapeHtml($fitment['engine'] ?? '') ?></td>
+                            <td class="data-grid-td"><?= $block->escapeHtml($fitment['note'] ?? '') ?></td>
+                            <td class="data-grid-td">
+                                <button type="button"
+                                        class="action-default scalable fitment-remove-btn"
+                                        data-fitment-id="<?= (int)$fitment['id'] ?>">
+                                    <span><?= $block->escapeHtml(__('Remove')) ?></span>
+                                </button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </fieldset>
+
+</div>
+
+<script>
+require(['jquery'], function ($) {
+    'use strict';
+
+    var productId  = <?= (int)$productId ?>;
+    var saveUrl    = '<?= $block->escapeJs($saveUrl) ?>';
+    var deleteUrl  = '<?= $block->escapeJs($deleteUrl) ?>';
+    var modelsUrl  = '<?= $block->escapeJs($modelsUrl) ?>';
+    var vehiclesUrl = '<?= $block->escapeJs($vehiclesUrl) ?>';
+
+    function getFormKey() {
+        return $('input[name="form_key"]').val() || window.FORM_KEY || '';
+    }
+
+    function showMessage(text, type) {
+        var $msg = $('#fitment-message');
+        $msg.removeClass('message-success message-error')
+            .addClass(type === 'success' ? 'message-success' : 'message-error')
+            .text(text)
+            .show();
+        setTimeout(function () { $msg.hide(); }, 4000);
+    }
+
+    function buildVehicleLabel(v) {
+        var yearEnd = (v.year_end && String(v.year_end).trim() !== '') ? v.year_end : 'present';
+        var parts = [v.year_start + '-' + yearEnd];
+        if (v.submodel && String(v.submodel).trim() !== '') {
+            parts.push(String(v.submodel).trim());
+        }
+        if (v.engine && String(v.engine).trim() !== '') {
+            parts.push(String(v.engine).trim());
+        }
+        return parts.join(' ');
+    }
+
+    /* Make change → load models */
+    $('#fitment-make').on('change', function () {
+        var make = $(this).val();
+        var $modelSelect = $('#fitment-model');
+        var $vehicleSelect = $('#fitment-vehicle');
+
+        $modelSelect.prop('disabled', true).html('<option value=""><?= $block->escapeJs(__('-- Select Model --')) ?></option>');
+        $vehicleSelect.prop('disabled', true).html('<option value=""><?= $block->escapeJs(__('-- Select Vehicle --')) ?></option>');
+
+        if (!make) {
+            return;
+        }
+
+        $.get(modelsUrl, { make: make }, function (data) {
+            if (data && data.length) {
+                $.each(data, function (i, item) {
+                    $modelSelect.append($('<option>').val(item.value).text(item.label));
+                });
+                $modelSelect.prop('disabled', false);
+            }
+        }, 'json').fail(function () {
+            showMessage('<?= $block->escapeJs(__('Failed to load models.')) ?>', 'error');
+        });
+    });
+
+    /* Model change → load vehicles */
+    $('#fitment-model').on('change', function () {
+        var make  = $('#fitment-make').val();
+        var model = $(this).val();
+        var $vehicleSelect = $('#fitment-vehicle');
+
+        $vehicleSelect.prop('disabled', true).html('<option value=""><?= $block->escapeJs(__('-- Select Vehicle --')) ?></option>');
+
+        if (!make || !model) {
+            return;
+        }
+
+        $.get(vehiclesUrl, { make: make, model: model }, function (data) {
+            if (data && data.length) {
+                $.each(data, function (i, v) {
+                    $vehicleSelect.append($('<option>').val(v.value).text(v.label));
+                });
+                $vehicleSelect.prop('disabled', false);
+            }
+        }, 'json').fail(function () {
+            showMessage('<?= $block->escapeJs(__('Failed to load vehicles.')) ?>', 'error');
+        });
+    });
+
+    /* Add fitment */
+    $('#fitment-add-btn').on('click', function () {
+        var vehicleId = $('#fitment-vehicle').val();
+        var note      = $('#fitment-note').val();
+
+        if (!vehicleId) {
+            showMessage('<?= $block->escapeJs(__('Please select a vehicle.')) ?>', 'error');
+            return;
+        }
+
+        $.post(saveUrl, {
+            product_id: productId,
+            vehicle_id: vehicleId,
+            note: note,
+            form_key: getFormKey()
+        }, function (response) {
+            if (response && response.success) {
+                /* Remove "no data" row if present */
+                $('#fitment-no-data-row').remove();
+
+                var $selectedVehicle = $('#fitment-vehicle option:selected');
+                var vehicleLabel = $selectedVehicle.text();
+                var make  = $('#fitment-make option:selected').text();
+                var model = $('#fitment-model option:selected').text();
+                var noteVal = note;
+
+                /* Parse label parts for table columns */
+                var fitmentId = response.fitment_id;
+
+                var $row = $('<tr>').attr('data-fitment-id', fitmentId);
+                $row.append($('<td class="data-grid-td">').text(make));
+                $row.append($('<td class="data-grid-td">').text(model));
+
+                /* year range is part of vehicleLabel */
+                var labelParts = vehicleLabel.split(' ');
+                var yearRange = labelParts[0] || '';
+                var submodel  = labelParts.length > 2 ? labelParts[1] : '';
+                var engine    = labelParts.length > 2 ? labelParts.slice(2).join(' ') : (labelParts[1] || '');
+
+                $row.append($('<td class="data-grid-td">').text(yearRange));
+                $row.append($('<td class="data-grid-td">').text(submodel));
+                $row.append($('<td class="data-grid-td">').text(engine));
+                $row.append($('<td class="data-grid-td">').text(noteVal));
+
+                var $btn = $('<button type="button" class="action-default scalable fitment-remove-btn">')
+                    .attr('data-fitment-id', fitmentId)
+                    .html('<span><?= $block->escapeJs(__('Remove')) ?></span>');
+                $row.append($('<td class="data-grid-td">').append($btn));
+
+                $('#fitment-table-body').append($row);
+
+                /* Reset fields */
+                $('#fitment-note').val('');
+                showMessage('<?= $block->escapeJs(__('Fitment added successfully.')) ?>', 'success');
+            } else {
+                showMessage(response.message || '<?= $block->escapeJs(__('Failed to add fitment.')) ?>', 'error');
+            }
+        }, 'json').fail(function () {
+            showMessage('<?= $block->escapeJs(__('An error occurred while saving.')) ?>', 'error');
+        });
+    });
+
+    /* Remove fitment — delegated on tbody */
+    $('#fitment-table-body').on('click', '.fitment-remove-btn', function () {
+        var fitmentId = $(this).data('fitment-id');
+        var $row = $(this).closest('tr');
+
+        if (!confirm('<?= $block->escapeJs(__('Are you sure you want to remove this fitment?')) ?>')) {
+            return;
+        }
+
+        $.post(deleteUrl, {
+            fitment_id: fitmentId,
+            form_key: getFormKey()
+        }, function (response) {
+            if (response && response.success) {
+                $row.remove();
+                if ($('#fitment-table-body tr').length === 0) {
+                    $('#fitment-table-body').append(
+                        '<tr id="fitment-no-data-row"><td colspan="7" class="data-grid-td" style="text-align:center;"><?= $block->escapeJs(__('No fitments found for this product.')) ?></td></tr>'
+                    );
+                }
+                showMessage('<?= $block->escapeJs(__('Fitment removed successfully.')) ?>', 'success');
+            } else {
+                showMessage(response.message || '<?= $block->escapeJs(__('Failed to remove fitment.')) ?>', 'error');
+            }
+        }, 'json').fail(function () {
+            showMessage('<?= $block->escapeJs(__('An error occurred while deleting.')) ?>', 'error');
+        });
+    });
+});
+</script>

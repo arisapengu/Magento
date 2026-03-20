@@ -1,0 +1,15 @@
+<input class="admin__control-text"
+       type="text"
+       data-bind="
+           attr: {
+               name: inputName,
+               id: uid,
+               placeholder: placeholder,
+               'aria-required': required,
+               'aria-invalid': error() ? 'true' : 'false'
+           },
+           value: value,
+           hasFocus: focused,
+           event: {change: userChanges},
+           disable: disabled"
+       ko-template="this"/>
