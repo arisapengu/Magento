@@ -38,7 +38,7 @@
     font-weight: 600;
     margin-bottom: 0.4rem;
     color: #333;
-    font-size: 0.9rem;
+    font-size: 1rem;
 }
 
 /* --------------------------------------------------------------------------
@@ -338,7 +338,7 @@
 .fitment-widget .fitment-select {
     width: 100%;
     height: 40px;
-    font-size: 0.875rem;
+    font-size: 0.9rem;
     min-width: unset;
 }
 

@@ -195,6 +195,17 @@ define(['jquery'], function ($) {
     /* ------------------------------------------------------------------ */
 
     function initWidget(config) {
+        // Show widget only on pages with layered filter block
+        var $filterBlock = $('#layered-filter-block');
+        var $widget = $('.fitment-widget').first();
+        if (!$filterBlock.length) {
+            $widget.remove();
+            return;
+        }
+        if (!$.contains($filterBlock[0], $widget[0])) {
+            $filterBlock.append($widget);
+        }
+
         var makesUrl  = config.makesUrl;
         var modelsUrl = config.modelsUrl;
         var yearsUrl  = config.yearsUrl;
